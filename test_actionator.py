@@ -1,8 +1,11 @@
 import unittest
 import json
-from actionator import addAction, getStats
+from actionator import addAction, getStats, _reset_state
 
 class TestActionator(unittest.TestCase):
+    def setUp(self):
+        _reset_state()
+
     def test_add_action_with_valid_json(self):
         error = addAction('{"action":"jump", "time":100}')
         self.assertIsNone(error)
@@ -28,8 +31,11 @@ class TestActionator(unittest.TestCase):
         addAction('{"action":"jump", "time":100}')
         addAction('{"action":"skip", "time":50}')
 
-        self.assertEqual(getStats(), '[{"action":"jump", "avg":100}, '\
-        '{"action":"skip", "avg":50}]')
+        self.assertEqual(getStats(), '[{"action": "jump", "avg": 100.0}, '\
+        '{"action": "skip", "avg": 50.0}]')
+
+    def test_get_stats_returns_empty_with_no_actions(self):
+        self.assertEqual(getStats(), '[]')
 
 if __name__ == '__main__':
     unittest.main()

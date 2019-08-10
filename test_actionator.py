@@ -1,8 +1,6 @@
 import unittest
-import json
-import threading
-from actionator import addAction, getStats, _reset_state, lock
-from unittest.mock import patch
+from actionator import addAction, getStats, _reset_state
+
 
 class TestActionator(unittest.TestCase):
     def setUp(self):
@@ -33,8 +31,8 @@ class TestActionator(unittest.TestCase):
         addAction('{"action":"jump", "time":100}')
         addAction('{"action":"skip", "time":50}')
 
-        self.assertEqual(getStats(), '[{"action": "jump", "avg": 100.0}, '\
-        '{"action": "skip", "avg": 50.0}]')
+        self.assertEqual(getStats(), '[{"action": "jump", "avg": 100.0}, '
+                                     '{"action": "skip", "avg": 50.0}]')
 
     def test_get_stats_rounds_to_two_decimals(self):
         addAction('{"action":"jump", "time":10}')
@@ -45,6 +43,7 @@ class TestActionator(unittest.TestCase):
 
     def test_get_stats_returns_empty_with_no_actions(self):
         self.assertEqual(getStats(), '[]')
+
 
 if __name__ == '__main__':
     unittest.main()

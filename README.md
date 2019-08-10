@@ -15,7 +15,7 @@ Python 3.7.4
 ```
 
 ### Tests
-Run unit test for the actionator
+Run unit tests for the actionator
 
 ```
 $ python3 test_actionator.py

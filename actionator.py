@@ -6,6 +6,18 @@ lock = Lock()
 
 
 def addAction(json_string: str) -> str:
+    """
+    Accepts a serialized json string containing an action and time
+    ex. {"action":"jump", "time":100}
+
+    The action is used to compute a running average time of all actions stored
+    in the stats global dictionary. This method will be called concurrently so
+    ensure that any reads/writes of the global stats variable utilize the global
+    lock.
+
+    This function will return an informative error message as a string otherwise
+    it will return None.
+    """
     global stats, lock
     try:
         activity = json.loads(json_string)
@@ -27,6 +39,12 @@ def addAction(json_string: str) -> str:
 
 
 def getStats() -> str:
+    """
+    Returns a serialized json array of the average time of each action that has
+    been added to the global stats object via addAction.
+
+    This method will be called concurrently so make sure to utilize the global lock
+    """
     global stats, lock
     with lock:
         summary = [{"action": action, "avg": round(stat["avg"], 2)}
@@ -35,8 +53,8 @@ def getStats() -> str:
 
 
 def _reset_state():
-    '''
+    """
     Primarily used for unit testing to ensure a clean state between tests
-    '''
+    """
     global stats
     stats = {}

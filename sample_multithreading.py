@@ -2,9 +2,11 @@ from actionator import addAction, getStats
 import threading
 import json
 
+
 def thread_task():
     for i in range(1, 100):
         addAction(json.dumps({"action": "jump", "time": i}))
+
 
 thread1 = threading.Thread(target=thread_task)
 thread2 = threading.Thread(target=thread_task)
